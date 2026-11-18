@@ -3,4 +3,5 @@ export interface Student {
     email: string;
     password: string;
     age: number;
+    is_active?: boolean;
 }
