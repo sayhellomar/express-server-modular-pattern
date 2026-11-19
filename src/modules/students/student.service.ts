@@ -1,17 +1,19 @@
 import { pool } from "../../db";
 import type { Student } from "./student.interface";
+import bcrypt from "bcryptjs";
 
 // Post student
 async function createStudentToDB(payload: Student) {
     const { name, email, password, age } = payload;
+    const hashPassword = await bcrypt.hash(password, 10);
     const result = await pool.query(
         `
         INSERT INTO students (name, email, password, age)
         VALUES ($1, $2, $3, $4) RETURNING *
     `,
-        [name, email, password, age],
+        [name, email, hashPassword, age],
     );
-
+    delete result.rows[0].password;
     return result;
 }
 
