@@ -4,14 +4,14 @@ import bcrypt from "bcryptjs";
 
 // Post student
 async function createStudentToDB(payload: Student) {
-    const { name, email, password, age } = payload;
+    const { name, email, password, age, role, is_active } = payload;
     const hashPassword = await bcrypt.hash(password, 10);
     const result = await pool.query(
         `
-        INSERT INTO students (name, email, password, age)
-        VALUES ($1, $2, $3, $4) RETURNING *
+        INSERT INTO students (name, email, password, age, role, is_active)
+        VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
     `,
-        [name, email, hashPassword, age],
+        [name, email, hashPassword, age, role, is_active],
     );
     delete result.rows[0].password;
     return result;
@@ -20,7 +20,7 @@ async function createStudentToDB(payload: Student) {
 // Get all students
 async function getStudentsFromDB() {
     const result = await pool.query(`
-       SELECT id, name, email, age, is_active FROM students
+       SELECT id, name, email, age, role, is_active FROM students
     `);
 
     return result;

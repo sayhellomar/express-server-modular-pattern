@@ -14,6 +14,7 @@ export default async function initDB() {
                 email VARCHAR(200) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 age SMALLINT,
+                role VARCHAR(20) DEFAULT 'member',
                 is_active BOOLEAN DEFAULT true,
                 created_at TIMESTAMP DEFAULT now(),
                 updated_at TIMESTAMP DEFAULT now()
