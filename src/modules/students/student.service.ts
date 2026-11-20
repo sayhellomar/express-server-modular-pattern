@@ -20,7 +20,7 @@ async function createStudentToDB(payload: Student) {
 // Get all students
 async function getStudentsFromDB() {
     const result = await pool.query(`
-       SELECT * FROM students
+       SELECT id, name, email, age, is_active FROM students
     `);
 
     return result;

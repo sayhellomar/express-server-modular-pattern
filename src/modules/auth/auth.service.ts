@@ -1,9 +1,9 @@
 import bcrypt from "bcryptjs";
 import { pool } from "../../db";
-import type { AuthPayload } from "./auth.interface";
+import type { LoginPayload } from "./auth.interface";
 import jwt from "jsonwebtoken";
 
-async function loginUserToDB(payload: AuthPayload) {
+async function loginUserToDB(payload: LoginPayload) {
     const { email, password } = payload;
     const user = await pool.query(
         `
@@ -37,6 +37,7 @@ async function loginUserToDB(payload: AuthPayload) {
         id: user.rows[0].id,
         name: user.rows[0].name,
         email: user.rows[0].email,
+        is_active: user.rows[0].is_active,
     };
 
     const accessToken = jwt.sign(authPayload, `${process.env.JWT_SECRET_KEY}`, {
