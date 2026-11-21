@@ -41,14 +41,27 @@ async function loginUserToDB(payload: LoginPayload) {
         role: user.rows[0].role,
     };
 
-    const accessToken = jwt.sign(authPayload, `${process.env.JWT_SECRET_KEY}`, {
-        expiresIn: "1d",
-    });
+    const accessToken = jwt.sign(
+        authPayload,
+        `${process.env.JWT_ACCESS_TOKEN_KEY}`,
+        {
+            expiresIn: "1h",
+        },
+    );
+
+    const refreshToken = jwt.sign(
+        authPayload,
+        `${process.env.JWT_REFRESH_TOKEN_KEY}`,
+        {
+            expiresIn: "10d",
+        },
+    );
 
     delete user.rows[0].password;
 
     return {
         accessToken,
+        refreshToken,
         user: user.rows[0],
     };
 }

@@ -8,7 +8,7 @@ export default function auth(...roles: Roles[]) {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             const token = req.headers.authorization;
-            const secretKey = process.env.JWT_SECRET_KEY;
+            const secretKey = process.env.JWT_ACCESS_TOKEN_KEY;
             if (!token) {
                 return sendResponse(
                     res,
