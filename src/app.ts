@@ -4,6 +4,7 @@ import express, {
     type Response,
 } from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { studentRoute } from "./modules/students/student.route";
 import { profileRoute } from "./modules/profile/profile.route";
 import { authRoute } from "./modules/auth/auth.route";
@@ -19,6 +20,7 @@ const corsOptions = {
 app.use(express.json());
 app.use(logger);
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Express PostgreSQL server");

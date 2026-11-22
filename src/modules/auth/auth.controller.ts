@@ -2,9 +2,9 @@ import type { Request, Response } from "express";
 import { authService } from "./auth.service";
 import sendResponse from "../../utils/sendResponse";
 
-async function loginUser(req: Request, res: Response) {
+async function loginStudent(req: Request, res: Response) {
     try {
-        const result = await authService.loginUserToDB(req.body);
+        const result = await authService.loginStudentToDB(req.body);
         const { refreshToken } = result;
         res.cookie("refreshToken", refreshToken, {
             secure: false,
@@ -19,6 +19,24 @@ async function loginUser(req: Request, res: Response) {
     }
 }
 
+async function refreshAccessToken(req: Request, res: Response) {
+    try {
+        const result = await authService.refreshGenerateAccessToken(
+            req.cookies.refreshToken,
+        );
+        sendResponse(
+            res,
+            200,
+            true,
+            "Access token generated successfully",
+            result,
+        );
+    } catch (error: any) {
+        sendResponse(res, 500, false, error.message, error);
+    }
+}
+
 export const authController = {
-    loginUser,
+    loginStudent,
+    refreshAccessToken,
 };
